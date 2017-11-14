@@ -1,7 +1,8 @@
 <?php
 namespace App\Model;
 
-use App\Lib\Response;
+use App\Lib\Response,
+    App\Lib\Auth;
 
 class UsuariosModel{
     private $db;
@@ -13,54 +14,63 @@ class UsuariosModel{
         $this->response = new Response();
     }
     
-    //LISTAR
-    public function listar($l, $p){
-        $data = $this->db->from($this->table)
-                         ->limit($l)
-                         ->offset($p)
-                         ->select(NULL)
-                         ->select(array('id_usr', 'tipo_usr' ,'nick_usr','edad_usr', 'sexo_usr' ,'avatar_usr'))
-                         ->fetchAll();
-                         
+    public function autenticar($telefono, $nombre)  {
+
+        $usuarios = $this->db->from($this->table)
+                             ->where('nombre', $nombre)
+                             ->where('telefono', $telefono)
+                             ->fetch();
+
+        if(is_object($usuarios)){
+            
+            $token = Auth::SignIn([
+                'telefono' => $usuarios->telefono,
+                'nombre' => $usuarios->nombre
+            ]);
+            
+            $data['token'] = $token;
+
+            $this->db->update($this->table, $data)
+                 ->where('idUser', $usuarios->idUser)
+                 ->execute();
+  
+            return $this->response->SetResponse(true, $token);
+        }else{
+            return $this->response->SetResponse(false, "Credenciales no válidas");
+        }
+        
+    }
+
+    //REGISTRAR USUARIO
+    public function registrar($data){
+        $telefono = $data["telefono"];
+        $nombre = $data["nombre"];
+
         $total = $this->db->from($this->table)
+                          ->where('telefono', $telefono)
+                          ->where('nombre', $nombre)
                           ->select(null)
                           ->select('COUNT(*) Total')
                           ->fetch()
                           ->Total;
-        return [
-            'data'  => $data,
-            'total' => $total
-        ];
-    }
-    
-    //OBTENER
-    public function obtener($id){
-        return $this->db->from($this->table)
-                        ->where('id_usr', $id)
-                        ->select(NULL)
-                        ->select(array('id_usr', 'tipo_usr' ,'nick_usr','edad_usr', 'sexo_usr', 'avatar_usr'))
-                        ->fetch();
-    }
-    
-    //ACTUALIZAR USUARIO
-    public function actualizar($data, $id){
-        if(isset($data['password_usr'])){
-            $data['password_usr'] = md5($data['password_usr']);            
+
+        if($total == 0){
+        
+            $token = Auth::SignIn([
+                'telefono' => $telefono,
+                'nombre' => $nombre
+            ]);
+                    
+            $data['token'] = $token;
+
+            $this->db->insertInto($this->table, $data)
+                     ->execute();
+
+            return $this->response->SetResponse(true, $token);
+            
+        } else{
+            return $this->response->SetResponse(false, "El usuario ya existe, intentalo con otro");
         }
         
-        $this->db->update($this->table, $data)
-                 ->where('id_usr', $id)
-                 ->execute();
-        
-        return $this->response->SetResponse(true);
     }
-    
-    //ELIMINAR USUARIO
-    public function eliminar($id){
-        $this->db->deleteFrom($this->table)
-                 ->where('id_usr', $id)
-                 ->execute();
-        
-        return $this->response->SetResponse(true);
-    } 
 }

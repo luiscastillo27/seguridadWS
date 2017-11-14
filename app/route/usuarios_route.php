@@ -4,25 +4,26 @@ use App\Lib\Auth,
     App\Validation\UsuarioValidation,
     App\Middleware\AuthMiddleware;
 
-$app->group('/usuario/', function () {
-    $this->get('listar/{l}/{p}', function ($req, $res, $args) {
+$app->group('/usuarios/', function () {
+    $this->post('autenticar', function ($req, $res, $args) {
+        $r = UsuarioValidation::validate($req->getParsedBody());
+        
+        if(!$r->response){
+            return $res->withHeader('Content-type', 'application/json')
+                       ->withStatus(422)
+                       ->write(json_encode($r->errors));
+        }
+
+        $parametros = $req->getParsedBody();        
+        
         return $res->withHeader('Content-type', 'application/json')
                    ->write(
-                     json_encode($this->model->usuarios->listar($args['l'], $args['p']))
+                     json_encode($this->model->usuarios->autenticar($parametros['telefono'], $parametros['nombre']))
                    );
     });
-    
-    
-    $this->get('obtener/{id}', function ($req, $res, $args) {
-        return $res->withHeader('Content-type', 'application/json')
-                   ->write(
-                     json_encode($this->model->usuarios->obtener($args['id']))
-                   );
-    });
-    
-    
-    $this->post('actualizar/{id}', function ($req, $res, $args) {
-        $r = UsuarioValidation::validate($req->getParsedBody(), true);
+
+    $this->post('registrar', function ($req, $res, $args) {
+        $r = UsuarioValidation::validate($req->getParsedBody());
         
         if(!$r->response){
             return $res->withHeader('Content-type', 'application/json')
@@ -32,15 +33,7 @@ $app->group('/usuario/', function () {
         
         return $res->withHeader('Content-type', 'application/json')
                    ->write(
-                     json_encode($this->model->usuarios->actualizar($req->getParsedBody(), $args['id']))
+                     json_encode($this->model->usuarios->registrar($req->getParsedBody()))
                    ); 
-    });
-    
-    
-    $this->delete('eliminar/{id}', function ($req, $res, $args) {
-        return $res->withHeader('Content-type', 'application/json')
-                   ->write(
-                     json_encode($this->model->usuarios->eliminar($args['id']))
-                   );   
     });
 });

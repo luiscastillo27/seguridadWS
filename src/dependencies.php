@@ -32,13 +32,9 @@ $container['db'] = function($c){
 // Models
 $container['model'] = function($c){
     return (object)[
-        'auth' => new App\Model\AuthModel($c->db),
-        'dietas' => new App\Model\DietasModel($c->db),
-        'masa' => new App\Model\MasaModel($c->db),
-        'motivacion' => new App\Model\MotivacionModel($c->db),
-        'nutricion' => new App\Model\NutricionModel($c->db),
-        'rutinas' => new App\Model\RutinasModel($c->db),
-        'test'     => new App\Model\TestModel($c->db),
         'usuarios' => new App\Model\UsuariosModel($c->db),
+        'contactos' => new App\Model\ContactosModel($c->db),
+        'mensaje' => new App\Model\MemsajesModel($c->db),
+        'solicitud' => new App\Model\SolicitudModel($c->db),
     ];
 };

@@ -3,7 +3,7 @@ namespace App\Model;
 
 use App\Lib\Response;
 
-class DietasModel{
+class ContactosModel{
     private $db;
     private $table = 'dietas';
     private $response;

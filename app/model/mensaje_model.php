@@ -3,7 +3,7 @@ namespace App\Model;
 
 use App\Lib\Response;
 
-class MasaModel{
+class MemsajesModel{
     private $db;
     private $table = 'masa_corporal';
     private $response;

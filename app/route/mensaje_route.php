@@ -1,28 +1,28 @@
 <?php
 use App\Lib\Auth,
     App\Lib\Response,
-    App\Validation\MasaValidation,
+    App\Validation\MensajeValidation,
     App\Middleware\AuthMiddleware;
 
-$app->group('/masa-corporal/', function () {
+$app->group('/mensaje/', function () {
     $this->get('listar/{l}/{p}/{id}', function ($req, $res, $args) {
         return $res->withHeader('Content-type', 'application/json')
                    ->write(
-                     json_encode($this->model->masa->listar($args['l'], $args['p'], $args['id']))
+                     json_encode($this->model->mensaje->listar($args['l'], $args['p'], $args['id']))
                    );
     });
     
     $this->get('obtener/{id}', function ($req, $res, $args) {
         return $res->withHeader('Content-type', 'application/json')
                    ->write(
-                     json_encode($this->model->masa->obtener($args['id']))
+                     json_encode($this->model->mensaje->obtener($args['id']))
                    );
     });
 
     $this->get('obtenerTodos/{id}', function ($req, $res, $args) {
         return $res->withHeader('Content-type', 'application/json')
                    ->write(
-                     json_encode($this->model->masa->obtenerTodos($args['id']))
+                     json_encode($this->model->mensaje->obtenerTodos($args['id']))
                    );
     });
     
@@ -37,7 +37,7 @@ $app->group('/masa-corporal/', function () {
         
         return $res->withHeader('Content-type', 'application/json')
                    ->write(
-                     json_encode($this->model->masa->registrar($req->getParsedBody()))
+                     json_encode($this->model->mensaje->registrar($req->getParsedBody()))
                    ); 
     });
 
@@ -53,7 +53,7 @@ $app->group('/masa-corporal/', function () {
         
         return $res->withHeader('Content-type', 'application/json')
                    ->write(
-                     json_encode($this->model->masa->actualizar($req->getParsedBody(), $args['id']))
+                     json_encode($this->model->mensaje->actualizar($req->getParsedBody(), $args['id']))
                    ); 
     });
     
@@ -61,14 +61,14 @@ $app->group('/masa-corporal/', function () {
     $this->delete('eliminar/{id}', function ($req, $res, $args) {
         return $res->withHeader('Content-type', 'application/json')
                    ->write(
-                     json_encode($this->model->masa->eliminar($args['id']))
+                     json_encode($this->model->mensaje->eliminar($args['id']))
                    );   
     });
 
     $this->delete('eliminarTodos/{id}', function ($req, $res, $args) {
         return $res->withHeader('Content-type', 'application/json')
                    ->write(
-                     json_encode($this->model->masa->eliminarTodos($args['id']))
+                     json_encode($this->model->mensaje->eliminarTodos($args['id']))
                    );   
     });
 });

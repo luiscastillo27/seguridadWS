@@ -17,7 +17,7 @@ return [
         // Configuración de mi APP ApiRestZeus
         'app_token_name'   => 'APP-TOKEN',
         'connectionString' => [
-            'dns'  => 'mysql:host=localhost;dbname=zeus;charset=utf8',
+            'dns'  => 'mysql:host=localhost;dbname=acseguridad;charset=utf8',
             'user' => 'root',
             'pass' => 'admin'
         ]

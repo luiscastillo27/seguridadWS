@@ -3,7 +3,7 @@ namespace App\Validation;
 
 use App\Lib\Response;
 
-class DietasValidation {
+class ContactosValidation {
     public static function validate($data, $update = false) {
         $response = new Response();
 
