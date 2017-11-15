@@ -8,19 +8,37 @@ class MensajeValidation {
         $response = new Response();
     
         
-        $key = 'idForeign_corporal';
+        $key = 'tokenEmirsor';
         if(empty($data[$key])) {
             $response->errors[$key][] = 'Este campo es obligatorio';
+        } else {
+            $value = $data[$key];
+            
+            if(strlen($value) < 200) {
+                $response->errors[$key][] = 'Debe contener como mínimo 200 caracteres';
+            }
         }
 
-        $key = 'altura_corporal';
+        $key = 'tokenReceptor';
         if(empty($data[$key])) {
             $response->errors[$key][] = 'Este campo es obligatorio';
-        } 
+        } else {
+            $value = $data[$key];
+            
+            if(strlen($value) < 200) {
+                $response->errors[$key][] = 'Debe contener como mínimo 200 caracteres';
+            }
+        }
 
-        $key = 'peso_corporal';
+        $key = 'mensaje';
         if(empty($data[$key])) {
             $response->errors[$key][] = 'Este campo es obligatorio';
+        } else {
+            $value = $data[$key];
+            
+            if(strlen($value) < 5) {
+                $response->errors[$key][] = 'Debe contener como mínimo 5 caracteres';
+            }
         }
         
 
