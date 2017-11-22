@@ -18,8 +18,6 @@ class ContactosModel{
       
         return $this->db->from($this->table)
                         ->where('tokenUser1', $id)
-                        ->select(null)
-                        ->select('idContacto, tokenUser2')
                         ->fetchAll();
                     
     }

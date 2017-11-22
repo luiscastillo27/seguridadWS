@@ -7,6 +7,7 @@ class SolicitudModel{
     private $db;
     private $table = 'solicitud';
     private $table2 = 'contactos';
+    private $table3 = 'solicitud';
     private $response;
     
     public function __CONSTRUCT($db){
@@ -30,7 +31,7 @@ class SolicitudModel{
         return $this->db->from($this->table)
                         ->where('idSolicitud', $id)
                         ->select(null)
-                        ->select('idSolicitud, tokenUser2')
+                        ->select('idSolicitud, tokenUser1')
                         ->fetch();
                     
     } 
@@ -42,8 +43,8 @@ class SolicitudModel{
         $tokenUser2 = $data["tokenUser2"];
 
         $total = $this->db->from($this->table)
-                          ->where('tokenUser1', $tokenUser1)
-                          ->where('tokenUser2', $tokenUser2)
+                          ->where('tokenUser1', $tokenUser2)
+                          ->where('tokenUser2', $tokenUser1)
                           ->select(null)
                           ->select('COUNT(*) Total')
                           ->fetch()
@@ -97,27 +98,35 @@ class SolicitudModel{
         $tokenUser1 = $data["tokenUser1"];
         $tokenUser2 = $data["tokenUser2"];
 
-        $total = $this->db->from($this->table)
+        $total1 = $this->db->from($this->table)
+                          ->where('tokenUser1', $tokenUser2)
+                          ->where('tokenUser2', $tokenUser1)
+                          ->select(null)
+                          ->select('COUNT(*) Total')
+                          ->fetch()
+                          ->Total;
+
+        if($total1 != 0){
+
+            $total2 = $this->db->from($this->table2)
                           ->where('tokenUser1', $tokenUser1)
                           ->where('tokenUser2', $tokenUser2)
                           ->select(null)
                           ->select('COUNT(*) Total')
                           ->fetch()
                           ->Total;
+                          
+            if($total2 == 0){
 
-        if($total != 0){
+                $data1 = array('tokenUser1' => $tokenUser1, 'tokenUser2' => $tokenUser2);
+                $data2 = array('tokenUser1' => $tokenUser2, 'tokenUser2' => $tokenUser1);
 
-            $total = $this->db->from($this->table2)
-                          ->where('tokenUser1', $tokenUser1)
-                          ->where('tokenUser2', $tokenUser2)
-                          ->select(null)
-                          ->select('COUNT(*) Total')
-                          ->fetch()
-                          ->Total;
-
-            if($total == 0){
-                $this->db->insertInto($this->table2, $data)
+                $this->db->insertInto($this->table2, $data1)
                          ->execute();
+
+                $this->db->insertInto($this->table2, $data2)
+                         ->execute();
+
 
                 return $this->response->SetResponse(true, "Solicitud aceptada");
             } else {

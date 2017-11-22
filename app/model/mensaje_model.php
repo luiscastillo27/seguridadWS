@@ -15,10 +15,19 @@ class MemsajesModel{
     }
     
     //LISTAR
-    public function listar($tokenEmirsor){
+    public function listarEmi($id){
       
         return $this->db->from($this->table)
-                         ->where('tokenEmirsor', $tokenEmirsor)
+                         ->where('tokenEmirsor', $id)
+                         ->fetchAll();
+                    
+    }
+
+
+    public function listarRes($id){
+      
+        return $this->db->from($this->table)
+                         ->where('tokenReceptor', $id)
                          ->fetchAll();
                     
     }

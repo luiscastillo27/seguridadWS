@@ -6,10 +6,17 @@ use App\Lib\Auth,
 
 $app->group('/mensaje/', function () {
 
-    $this->get('listar', function ($req, $res, $args) {
+    $this->get('listarEmi/{id}', function ($req, $res, $args) {
         return $res->withHeader('Content-type', 'application/json')
                    ->write(
-                     json_encode($this->model->mensaje->listar($args['tokenEmirsor']))
+                     json_encode($this->model->mensaje->listarEmi($args['id']))
+                   );
+    });
+
+    $this->get('listarRes/{id}', function ($req, $res, $args) {
+        return $res->withHeader('Content-type', 'application/json')
+                   ->write(
+                     json_encode($this->model->mensaje->listarRes($args['id']))
                    );
     });
     
