@@ -49,10 +49,17 @@ $app->group('/solicitud/', function () {
                    );   
     });
 
-    $this->get('listar', function ($req, $res, $args) {
+    $this->get('listar/{id}', function ($req, $res, $args) {
         return $res->withHeader('Content-type', 'application/json')
                    ->write(
-                     json_encode($this->model->solicitud->listar($req->getParsedBody()))
+                     json_encode($this->model->solicitud->listar($args['id']))
+                   );   
+    });
+
+    $this->get('obtener/{id}', function ($req, $res, $args) {
+        return $res->withHeader('Content-type', 'application/json')
+                   ->write(
+                     json_encode($this->model->solicitud->obtener($args['id']))
                    );   
     });
 

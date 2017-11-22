@@ -6,10 +6,10 @@ use App\Lib\Auth,
 
 $app->group('/contactos/', function () {
 
-    $this->get('listar', function ($req, $res, $args) {
+    $this->get('listar/{id}', function ($req, $res, $args) {
         return $res->withHeader('Content-type', 'application/json')
                    ->write(
-                     json_encode($this->model->contactos->listar($req->getParsedBody()))
+                     json_encode($this->model->contactos->listar($args['id']))
                    );
     });
     

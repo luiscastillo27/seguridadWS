@@ -5,6 +5,7 @@ use App\Lib\Auth,
     App\Middleware\AuthMiddleware;
 
 $app->group('/usuarios/', function () {
+  
     $this->post('autenticar', function ($req, $res, $args) {
         $r = UsuarioValidation::validate($req->getParsedBody());
         

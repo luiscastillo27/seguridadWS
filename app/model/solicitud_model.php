@@ -15,13 +15,25 @@ class SolicitudModel{
     }
     
     //LISTAR SOLICITUDES
-    public function listar(){
+    public function listar($id){
       
         return $this->db->from($this->table)
-                         ->fetchAll();
+                        ->where('tokenUser2', $id)
+                        ->select(null)
+                        ->select('idSolicitud, tokenUser1')
+                        ->fetchAll();
                     
     }
-  
+    
+    public function obtener($id){
+      
+        return $this->db->from($this->table)
+                        ->where('idSolicitud', $id)
+                        ->select(null)
+                        ->select('idSolicitud, tokenUser2')
+                        ->fetch();
+                    
+    } 
     
     //ENVIAR SOLICITUD
     public function enviar($data){

@@ -14,10 +14,13 @@ class ContactosModel{
     }
     
     //LISTAR
-    public function listar(){
+    public function listar($id){
       
         return $this->db->from($this->table)
-                         ->fetchAll();
+                        ->where('tokenUser1', $id)
+                        ->select(null)
+                        ->select('idContacto, tokenUser2')
+                        ->fetchAll();
                     
     }
     

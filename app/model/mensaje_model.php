@@ -53,6 +53,8 @@ class MemsajesModel{
 
             return $this->response->SetResponse(true, "El mensaje ha sido enviado");
 
+        } else {
+            return $this->response->SetResponse(true, "No se puede enviar el mensaje");
         }
         
         
