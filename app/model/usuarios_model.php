@@ -23,16 +23,14 @@ class UsuariosModel{
 
         if(is_object($usuarios)){
             
-            $token = Auth::SignIn([
-                'telefono' => $usuarios->telefono,
-                'nombre' => $usuarios->nombre
-            ]);
-            
-            $data['token'] = $token;
+            $old = $this->db->from($this->table)
+                          ->select(null)
+                          ->select('token')
+                          ->where('nombre', $nombre)
+                          ->where('telefono', $telefono)
+                          ->fetch();
 
-            $this->db->update($this->table, $data)
-                 ->where('idUser', $usuarios->idUser)
-                 ->execute();
+            $token = $old->token;
   
             return $this->response->SetResponse(true, $token);
         }else{
