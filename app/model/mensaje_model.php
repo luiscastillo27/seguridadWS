@@ -7,6 +7,7 @@ class MemsajesModel{
     private $db;
     private $table = 'mensaje';
     private $table2 = 'contactos';
+    private $table3 = 'autoridad';
     private $response;
     
     public function __CONSTRUCT($db){
@@ -58,6 +59,9 @@ class MemsajesModel{
         if($total != 0){
 
             $this->db->insertInto($this->table, $data)
+                  ->execute();
+
+            $this->db->insertInto($this->table3, $data)
                   ->execute();
 
             return $this->response->SetResponse(true, "El mensaje ha sido enviado");
