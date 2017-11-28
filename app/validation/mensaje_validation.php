@@ -8,14 +8,14 @@ class MensajeValidation {
         $response = new Response();
     
         
-        $key = 'tokenEmirsor';
+        $key = 'tokenEmisor';
         if(empty($data[$key])) {
             $response->errors[$key][] = 'Este campo es obligatorio';
         } else {
             $value = $data[$key];
             
-            if(strlen($value) < 200) {
-                $response->errors[$key][] = 'Debe contener como mínimo 200 caracteres';
+            if(strlen($value) < 120) {
+                $response->errors[$key][] = 'Debe contener como mínimo 127 caracteres';
             }
         }
 
@@ -25,8 +25,8 @@ class MensajeValidation {
         } else {
             $value = $data[$key];
             
-            if(strlen($value) < 200) {
-                $response->errors[$key][] = 'Debe contener como mínimo 200 caracteres';
+            if(strlen($value) < 127) {
+                $response->errors[$key][] = 'Debe contener como mínimo 127 caracteres';
             }
         }
 
@@ -36,8 +36,8 @@ class MensajeValidation {
         } else {
             $value = $data[$key];
             
-            if(strlen($value) < 5) {
-                $response->errors[$key][] = 'Debe contener como mínimo 5 caracteres';
+            if(strlen($value) < 2) {
+                $response->errors[$key][] = 'Debe contener como mínimo 2 caracteres';
             }
         }
         

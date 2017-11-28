@@ -19,7 +19,7 @@ class MemsajesModel{
     public function listarEmi($id){
       
         return $this->db->from($this->table)
-                         ->where('tokenEmirsor', $id)
+                         ->where('tokenEmisor', $id)
                          ->fetchAll();
                     
     }
@@ -45,11 +45,11 @@ class MemsajesModel{
 
         date_default_timezone_set('America/Monterrey');
         $data['fecha'] = date("d/m/Y - h:i a");
-        $tokenEmirsor = $data["tokenEmirsor"];
+        $tokenEmisor = $data["tokenEmisor"];
         $tokenReceptor = $data["tokenReceptor"];
 
         $total = $this->db->from($this->table2)
-                          ->where('tokenUser1', $tokenEmirsor)
+                          ->where('tokenUser1', $tokenEmisor)
                           ->where('tokenUser2', $tokenReceptor)
                           ->select(null)
                           ->select('COUNT(*) Total')
@@ -61,8 +61,15 @@ class MemsajesModel{
             $this->db->insertInto($this->table, $data)
                   ->execute();
 
-            $this->db->insertInto($this->table3, $data)
+            $data1 = array('tokenUser1' => $tokenEmisor, 'tokenUser2' => $tokenReceptor);
+
+            $this->db->insertInto($this->table3, $data1)
                   ->execute();
+
+            return [
+                'message' => 'El mensaje ha sido enviado',
+                'data' => $data
+            ];
 
             return $this->response->SetResponse(true, "El mensaje ha sido enviado");
 
