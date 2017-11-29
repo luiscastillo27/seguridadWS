@@ -26,6 +26,13 @@ $app->group('/mensaje/', function () {
                      json_encode($this->model->mensaje->obtener($args['id']))
                    );
     });
+
+    $this->post('archivos', function ($req, $res, $args) {
+        return $res->withHeader('Content-type', 'application/json')
+                   ->write(
+                     json_encode($this->model->mensaje->archivos($req->getParsedBody()))
+                   );
+    });
     
     $this->post('enviar', function ($req, $res, $args) {
         $r = MensajeValidation::validate($req->getParsedBody());

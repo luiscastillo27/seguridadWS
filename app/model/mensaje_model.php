@@ -40,6 +40,42 @@ class MemsajesModel{
                         ->fetch();
     }
 
+    //SUBIR ARCHIVOS
+    public function archivos($data){
+
+        date_default_timezone_set('America/Monterrey');
+        $file = $_FILES["archivo"]["name"];
+        $extension = end(explode(".", $_FILES['archivo']['name']));
+        $archivo = date("Y-m-d").date("H-I-s").'.'.$extension;
+        $data['archivo'] = $archivo;
+        $data['fecha'] = date("d/m/Y - h:i a");
+        $data['mensaje'] = 'Ver archivo';
+
+        $tokenEmisor = $data["tokenEmisor"];
+        $tokenReceptor = $data["tokenReceptor"];
+
+        $total = $this->db->from($this->table2)
+                          ->where('tokenUser1', $tokenEmisor)
+                          ->where('tokenUser2', $tokenReceptor)
+                          ->select(null)
+                          ->select('COUNT(*) Total')
+                          ->fetch()
+                          ->Total;
+        
+        if($total != 0){
+
+            move_uploaded_file($_FILES["archivo"]["tmp_name"], "archivos/".$archivo);
+            $this->db->insertInto($this->table, $data)
+                     ->execute();
+
+            return $this->response->SetResponse(true, "El archivo ha sido enviado");
+            //return $this->response->SetResponse(true, $data);
+        } else {
+            return $this->response->SetResponse(true, "No se puede enviar el archivo");
+        }
+        
+    }
+
     //REGISTRAR USUARIO
     public function enviar($data){
 
