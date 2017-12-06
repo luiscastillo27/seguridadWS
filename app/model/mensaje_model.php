@@ -64,7 +64,7 @@ class MemsajesModel{
         
         if($total != 0){
 
-            move_uploaded_file($_FILES["archivo"]["tmp_name"], "archivos/".$archivo);
+            move_uploaded_file($_FILES["archivo"]["tmp_name"], "../archivos/".$archivo);
             $this->db->insertInto($this->table, $data)
                      ->execute();
 
